@@ -1,5 +1,6 @@
 package zxh.demo.contractdemo.consumer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,11 +16,14 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/consumer")
 public class Visitor {
 
+    @Value("${producer.path}")
+    private String producerPath;
+
     @GetMapping("/visit")
     public Mono<String> visit(String name) {
         return WebClient
                 .builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl(producerPath)
                 .build()
                 .get()
                 .uri(uriBuilder ->
