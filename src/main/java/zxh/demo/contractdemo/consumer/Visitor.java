@@ -20,7 +20,7 @@ public class Visitor {
     private String producerPath;
 
     @GetMapping("/visit")
-    public Mono<String> visit(String name) {
+    public Mono<GreetingResponse> visit(String name) {
         return WebClient
                 .builder()
                 .baseUrl(producerPath)
@@ -32,7 +32,6 @@ public class Visitor {
                                 .queryParam("name", name)
                                 .build())
                 .retrieve()
-                .bodyToMono(GreetingResponse.class)
-                .map(GreetingResponse::toString);
+                .bodyToMono(GreetingResponse.class);
     }
 }

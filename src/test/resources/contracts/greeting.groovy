@@ -7,16 +7,18 @@ Contract.make {
         method GET()
         urlPath("/producer/greeting") {
             queryParameters {
-                parameter 'name' : value('test-user')
+                parameter 'name' : $(producer('test-user'), consumer("consumer"))
             }
         }
-
     }
 
     response {
         status OK()
+        headers {
+            contentType(applicationJson())
+        }
         body([
-                name : 'test-user',
+                name : $(producer('test-user'), consumer('consumer')),
                 content : 'Greetings!',
                 time : $(anyIso8601WithOffset()),
         ])
